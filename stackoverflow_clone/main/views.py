@@ -16,7 +16,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
     lookup_field = 'code'
     queryset = models.Post.objects.filter(parent__isnull=True)
     permission_classes = (UserPermission,)
-    pagination_class = CursorPagination
+    # pagination_class = CursorPagination
 
     def get_queryset(self):
         return self.queryset.annotate(
