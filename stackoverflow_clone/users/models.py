@@ -15,7 +15,7 @@ class Profile(models.Model):
 
 class User(AbstractUser):
     profile = models.OneToOneField(Profile, on_delete=models.DO_NOTHING)
-    email = models.EmailField('email address', blank=True, unique=True)
+    email = models.EmailField('email address', unique=True)
 
     def __str__(self):
         return self.username
