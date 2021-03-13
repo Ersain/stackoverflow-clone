@@ -31,6 +31,9 @@ class Post(models.Model):
     parent = models.ForeignKey('self', on_delete=models.DO_NOTHING, related_name='children', null=True, blank=True)
     tags = models.ManyToManyField('main.Tag', blank=True)
 
+    def __str__(self):
+        return self.code
+
 
 class Tag(models.Model):
     title = models.CharField(max_length=255)

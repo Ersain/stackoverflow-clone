@@ -57,15 +57,15 @@ class AnswerListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = models.Post
-        fields = ('code', 'title', 'body', 'rating', 'created_at', 'updated_at', 'author')
+        fields = ('code', 'body', 'rating', 'created_at', 'updated_at', 'author')
 
 
-class AnswerCreateUpdateSerializer(serializers.ModelSerializer):
+class AnswerCreateSerializer(serializers.ModelSerializer):
     parent = serializers.CharField(source='parent.code')
 
     class Meta:
         model = models.Post
-        fields = ('code', 'title', 'body', 'parent')
+        fields = ('code', 'body', 'parent')
         read_only_fields = ('code',)
 
     def create(self, validated_data):
@@ -77,8 +77,14 @@ class AnswerCreateUpdateSerializer(serializers.ModelSerializer):
         validated_data['parent_id'] = parent_obj.pk
         return self.Meta.model.objects.create(**validated_data)
 
+
+class AnswerUpdateSerializer(AnswerCreateSerializer):
+    parent = serializers.CharField(required=False)
+
+    class Meta(AnswerCreateSerializer.Meta):
+        fields = ('code', 'body', 'parent')
+
     def update(self, instance, validated_data):
-        instance.title = validated_data.get('title', instance.title)
         instance.body = validated_data.get('body', instance.body)
         instance.save()
         return instance
@@ -87,6 +93,7 @@ class AnswerCreateUpdateSerializer(serializers.ModelSerializer):
 class QuestionDetailSerializer(serializers.ModelSerializer):
     author = ProfileSerializer()
     tags = TagSerializer(many=True)
+    answer_count = serializers.IntegerField()
     answers = AnswerListSerializer(source='children', many=True)
 
     class Meta:

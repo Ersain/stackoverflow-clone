@@ -1,7 +1,6 @@
 from django.db.models import Count
 from rest_framework import viewsets
 
-from utils.pagination import CursorPagination
 from utils.permissions import UserPermission
 from . import models
 from . import serializers
@@ -40,14 +39,12 @@ class AnswerViewSet(viewsets.ModelViewSet):
     permission_classes = (UserPermission,)
 
     def get_queryset(self):
-        return self.queryset.order_by('rating', 'created_at')
+        return self.queryset.order_by('-rating', 'created_at')
 
     def get_serializer_class(self):
-        if self.action == 'retrieve':
-            return serializers.AnswerListSerializer
-        if self.action == 'list':
+        if self.action in ('retrieve', 'list'):
             return serializers.AnswerListSerializer
         if self.action == 'create':
-            return serializers.AnswerCreateUpdateSerializer
+            return serializers.AnswerCreateSerializer
         if self.action == 'update':
-            return serializers.AnswerCreateUpdateSerializer
+            return serializers.AnswerUpdateSerializer
