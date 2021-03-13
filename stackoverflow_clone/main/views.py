@@ -48,6 +48,6 @@ class AnswerViewSet(viewsets.ModelViewSet):
         if self.action == 'list':
             return serializers.AnswerListSerializer
         if self.action == 'create':
-            return serializers.QuestionCreateUpdateSerializer
+            return serializers.AnswerCreateUpdateSerializer
         if self.action == 'update':
-            return serializers.QuestionCreateUpdateSerializer
+            return serializers.AnswerCreateUpdateSerializer

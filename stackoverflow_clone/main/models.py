@@ -29,7 +29,7 @@ class Post(models.Model):
     accepted_answer = models.ForeignKey('self', on_delete=models.DO_NOTHING, null=True, blank=True)
     author = models.ForeignKey('users.Profile', on_delete=models.DO_NOTHING, related_name='posts')
     parent = models.ForeignKey('self', on_delete=models.DO_NOTHING, related_name='children', null=True, blank=True)
-    tags = models.ManyToManyField('main.Tag')
+    tags = models.ManyToManyField('main.Tag', blank=True)
 
 
 class Tag(models.Model):
